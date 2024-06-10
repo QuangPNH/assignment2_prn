@@ -28,12 +28,12 @@ namespace Odata_Api.Controllers
             return Ok(_context.Products.Include(p => p.Category));
         }
 
-        // PUT: odata/Products({key})
-        [HttpPut("{key}")]
+        // PUT: odata/Products({pkey})
+        [HttpPut("{pkey}")]
         [EnableQuery]
-        public async Task<IActionResult> Put(int key, [FromBody] Product product)
+        public async Task<IActionResult> Put(int pkey, [FromBody] Product product)
         {
-            if (key != product.ProductId)
+            if (pkey != product.ProductId)
             {
                 return BadRequest();
             }
@@ -46,7 +46,7 @@ namespace Odata_Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProductExists(key))
+                if (!ProductExists(pkey))
                 {
                     return NotFound();
                 }
@@ -73,16 +73,16 @@ namespace Odata_Api.Controllers
             return Created(product);
         }
 
-        // DELETE: odata/Products({key})
-        [HttpDelete("{key}")]
+        // DELETE: odata/Products({pkey})
+        [HttpDelete("{pkey}")]
         [EnableQuery]
-        public async Task<IActionResult> Delete(int key)
+        public async Task<IActionResult> Delete(int pkey)
         {
             if (_context.Products == null)
             {
                 return NotFound();
             }
-            var product = await _context.Products.FindAsync(key);
+            var product = await _context.Products.FindAsync(pkey);
             if (product == null)
             {
                 return NotFound();
@@ -94,9 +94,9 @@ namespace Odata_Api.Controllers
             return NoContent();
         }
 
-        private bool ProductExists(int key)
+        private bool ProductExists(int pkey)
         {
-            return (_context.Products?.Any(e => e.ProductId == key)).GetValueOrDefault();
+            return (_context.Products?.Any(e => e.ProductId == pkey)).GetValueOrDefault();
         }
     }
 }

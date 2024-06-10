@@ -27,12 +27,13 @@ namespace Odata_Api.Controllers
             return Ok(_context.Staffs);
         }
 
-        // PUT: odata/Staffs({key})
-        [HttpPut("{key}")]
+        
+        // PUT: odata/Staffs({skey})
+        [HttpPut("{skey}")]
         [EnableQuery]
-        public async Task<IActionResult> Put(int key, [FromBody] Staff staff)
+        public async Task<IActionResult> Put(int skey, [FromBody] Staff staff)
         {
-            if (key != staff.StaffId)
+            if (skey != staff.StaffId)
             {
                 return BadRequest();
             }
@@ -45,7 +46,7 @@ namespace Odata_Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StaffExists(key))
+                if (!StaffExists(skey))
                 {
                     return NotFound();
                 }
@@ -72,16 +73,16 @@ namespace Odata_Api.Controllers
             return Created(staff);
         }
 
-        // DELETE: odata/Staffs({key})
-        [HttpDelete("{key}")]
+        // DELETE: odata/Staffs({skey})
+        [HttpDelete("{skey}")]
         [EnableQuery]
-        public async Task<IActionResult> Delete(int key)
+        public async Task<IActionResult> Delete(int skey)
         {
             if (_context.Staffs == null)
             {
                 return NotFound();
             }
-            var staff = await _context.Staffs.FindAsync(key);
+            var staff = await _context.Staffs.FindAsync(skey);
             if (staff == null)
             {
                 return NotFound();
@@ -93,9 +94,9 @@ namespace Odata_Api.Controllers
             return NoContent();
         }
 
-        private bool StaffExists(int key)
+        private bool StaffExists(int skey)
         {
-            return (_context.Staffs?.Any(e => e.StaffId == key)).GetValueOrDefault();
+            return (_context.Staffs?.Any(e => e.StaffId == skey)).GetValueOrDefault();
         }
     }
 }

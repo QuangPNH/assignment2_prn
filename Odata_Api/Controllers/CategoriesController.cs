@@ -29,10 +29,10 @@ namespace Odata_Api.Controllers
 
         // PUT: odata/Categories(5)
         [EnableQuery]
-        [HttpPut("{key}")]
-        public async Task<IActionResult> Put(int key, [FromBody] Category category)
+        [HttpPut("{ckey}")]
+        public async Task<IActionResult> Put(int ckey, [FromBody] Category category)
         {
-            if (key != category.CategoryId)
+            if (ckey != category.CategoryId)
             {
                 return BadRequest();
             }
@@ -45,7 +45,7 @@ namespace Odata_Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CategoryExists(key))
+                if (!CategoryExists(ckey))
                 {
                     return NotFound();
                 }
@@ -75,15 +75,15 @@ namespace Odata_Api.Controllers
 
         // DELETE: odata/Categories(5)
         [EnableQuery()]
-        [HttpDelete("{key}")]
-        public async Task<IActionResult> Delete(int key)
+        [HttpDelete("{ckey}")]
+        public async Task<IActionResult> Delete(int ckey)
         {
             if (_context.Categories == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(key);
+            var category = await _context.Categories.FindAsync(ckey);
             if (category == null)
             {
                 return NotFound();
@@ -95,9 +95,9 @@ namespace Odata_Api.Controllers
             return NoContent();
         }
 
-        private bool CategoryExists(int key)
+        private bool CategoryExists(int ckey)
         {
-            return (_context.Categories?.Any(e => e.CategoryId == key)).GetValueOrDefault();
+            return (_context.Categories?.Any(e => e.CategoryId == ckey)).GetValueOrDefault();
         }
     }
 }

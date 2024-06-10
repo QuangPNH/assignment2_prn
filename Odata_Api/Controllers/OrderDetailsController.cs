@@ -28,11 +28,11 @@ namespace Odata_Api.Controllers
         }
 
         // PUT: odata/OrderDetails(5)
-        [HttpPut("{key}")]
+        [HttpPut("{odkey}")]
         [EnableQuery]
-        public async Task<IActionResult> Put(int key, [FromBody] OrderDetail orderDetail)
+        public async Task<IActionResult> Put(int odkey, [FromBody] OrderDetail orderDetail)
         {
-            if (key != orderDetail.OrderDetailId)
+            if (odkey != orderDetail.OrderDetailId)
             {
                 return BadRequest();
             }
@@ -45,7 +45,7 @@ namespace Odata_Api.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderDetailExists(key))
+                if (!OrderDetailExists(odkey))
                 {
                     return NotFound();
                 }
@@ -74,16 +74,16 @@ namespace Odata_Api.Controllers
         }
 
         // DELETE: odata/OrderDetails(5)
-        [HttpDelete("{key}")]
+        [HttpDelete("{odkey}")]
         [EnableQuery]
-        public async Task<IActionResult> Delete(int key)
+        public async Task<IActionResult> Delete(int odkey)
         {
             if (_context.OrderDetails == null)
             {
                 return NotFound();
             }
 
-            var orderDetail = await _context.OrderDetails.FindAsync(key);
+            var orderDetail = await _context.OrderDetails.FindAsync(odkey);
             if (orderDetail == null)
             {
                 return NotFound();
@@ -95,9 +95,9 @@ namespace Odata_Api.Controllers
             return NoContent();
         }
 
-        private bool OrderDetailExists(int key)
+        private bool OrderDetailExists(int odkey)
         {
-            return (_context.OrderDetails?.Any(e => e.OrderDetailId == key)).GetValueOrDefault();
+            return (_context.OrderDetails?.Any(e => e.OrderDetailId == odkey)).GetValueOrDefault();
         }
     }
 }
