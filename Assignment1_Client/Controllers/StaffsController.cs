@@ -212,7 +212,8 @@ namespace Assignment1_Client.Controllers
                 return RedirectToAction("Index", "Staff");
             }
             int userIdmember = HttpContext.Session.GetInt32("USERID").Value;
-            Staff staff = await ApiHandler.DeserializeApiResponse<Staff>(StaffApiUrl + "/" + userIdmember, HttpMethod.Get);
+            List<Staff> staffList = await ApiHandler.DeserializeApiResponse<List<Staff>>(StaffApiUrl + "?$filter=StaffId eq " + userIdmember, HttpMethod.Get);
+            Staff staff = staffList.FirstOrDefault();
 
             if (TempData != null)
             {
@@ -229,7 +230,8 @@ namespace Assignment1_Client.Controllers
         {
             string name = HttpContext.Session.GetString("USERNAME");
             int userId = HttpContext.Session.GetInt32("USERID").Value;
-            Staff staff = await ApiHandler.DeserializeApiResponse<Staff>(StaffApiUrl + "/" + userId, HttpMethod.Get);
+            List<Staff> staffList = await ApiHandler.DeserializeApiResponse<List<Staff>>(StaffApiUrl + "?$filter=StaffId eq " + userId, HttpMethod.Get);
+            Staff staff = staffList.FirstOrDefault();
 
             if (staff == null)
             {
@@ -270,7 +272,8 @@ namespace Assignment1_Client.Controllers
                 return RedirectToAction("Index", "Home");
 
             staffRequest.Id = userId.Value;
-            Staff tempStaff = await ApiHandler.DeserializeApiResponse<Staff>(StaffApiUrl + "/" + staffRequest.Id, HttpMethod.Get);
+            List<Staff> staffList = await ApiHandler.DeserializeApiResponse<List<Staff>>(StaffApiUrl + "?$filter=StaffId eq " + userId, HttpMethod.Get);
+            Staff tempStaff = staffList.FirstOrDefault();
 
             Staff staffEditRequest = new Staff()
             {
